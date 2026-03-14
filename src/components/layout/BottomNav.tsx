@@ -35,39 +35,39 @@ export function BottomNav({ role }: BottomNavProps) {
           <Link
             href="/"
             className={cn(
-              "flex flex-col items-center justify-center flex-1 gap-0.5 py-2 text-xs font-medium min-w-0",
+              "flex items-center justify-center flex-1 py-2 min-w-0",
               pathname === "/" ? "text-white" : "text-white/70"
             )}
+            aria-label="Home"
           >
-            <Home className={cn("h-5 w-5", pathname === "/" && "fill-current")} />
-            <span>Home</span>
+            <Home className={cn("h-6 w-6", pathname === "/" && "fill-current")} />
           </Link>
           <Link
             href="/opportunities"
             className={cn(
-              "flex flex-col items-center justify-center flex-1 gap-0.5 py-2 text-xs font-medium min-w-0",
+              "flex items-center justify-center flex-1 py-2 min-w-0",
               pathname.startsWith("/opportunities") ? "text-white" : "text-white/70"
             )}
+            aria-label="Opportunities"
           >
-            <Heart className={cn("h-5 w-5", pathname.startsWith("/opportunities") && "fill-current")} />
-            <span>Opportunities</span>
+            <Heart className={cn("h-6 w-6", pathname.startsWith("/opportunities") && "fill-current")} />
           </Link>
           <Link
             href="/events"
             className={cn(
-              "flex flex-col items-center justify-center flex-1 gap-0.5 py-2 text-xs font-medium min-w-0",
+              "flex items-center justify-center flex-1 py-2 min-w-0",
               pathname.startsWith("/events") ? "text-white" : "text-white/70"
             )}
+            aria-label="Events"
           >
-            <Calendar className={cn("h-5 w-5", pathname.startsWith("/events") && "fill-current")} />
-            <span>Events</span>
+            <Calendar className={cn("h-6 w-6", pathname.startsWith("/events") && "fill-current")} />
           </Link>
           <Link
             href="/login"
-            className="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 text-xs font-medium text-white/70 min-w-0"
+            className="flex items-center justify-center flex-1 py-2 min-w-0 text-white/70"
+            aria-label="Profile"
           >
-            <User className="h-5 w-5" />
-            <span>Profile</span>
+            <User className="h-6 w-6" />
           </Link>
         </div>
       </nav>
@@ -87,12 +87,12 @@ export function BottomNav({ role }: BottomNavProps) {
               key={href}
               href={href}
               className={cn(
-                "flex flex-col items-center justify-center flex-1 gap-0.5 py-2 text-xs font-medium transition-colors min-w-0",
+                "flex items-center justify-center flex-1 py-2 transition-colors min-w-0",
                 isActive ? "text-white" : "text-white/70"
               )}
+              aria-label={label}
             >
-              <Icon className={cn("h-5 w-5", isActive && "stroke-[2.5]")} />
-              <span className="truncate max-w-full px-1">{label}</span>
+              <Icon className={cn("h-6 w-6", isActive && "stroke-[2.5]")} />
             </Link>
           );
         })}

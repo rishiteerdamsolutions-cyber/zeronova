@@ -90,7 +90,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (email: string, password: string): Promise<AppUser | null> => {
     const auth = getFirebaseAuth();
     if (!auth) throw new Error("Sign in is temporarily unavailable.");
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err: unknown) {
+      const fb = err as { code?: string; message?: string };
+      if (fb?.code === "auth/operation-not-allowed")
+        throw new Error("Email/Password sign-in is not enabled. Check Firebase Console → Authentication → Sign-in method.");
+      if (fb?.code === "auth/user-not-found" || fb?.code === "auth/wrong-password")
+        throw new Error("Invalid email or password.");
+      if (fb?.code === "auth/invalid-email")
+        throw new Error("Invalid email address.");
+      if (fb?.code === "auth/unauthorized-domain")
+        throw new Error("This domain is not authorized. Add it in Firebase Console → Authentication → Settings → Authorized domains.");
+      throw new Error(fb?.message || "Sign in failed. Please try again.");
+    }
     const appUser = await fetchUserFromDb(auth.currentUser!.uid);
     setUser(appUser);
     setFirebaseUser(auth.currentUser);
@@ -105,12 +118,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   ) => {
     const auth = getFirebaseAuth();
     if (!auth) throw new Error("Registration is temporarily unavailable.");
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    let cred;
+    try {
+      cred = await createUserWithEmailAndPassword(auth, email, password);
+    } catch (err: unknown) {
+      const fb = err as { code?: string; message?: string };
+      if (fb?.code === "auth/operation-not-allowed")
+        throw new Error("Email/Password sign-in is not enabled. Check Firebase Console → Authentication → Sign-in method.");
+      if (fb?.code === "auth/email-already-in-use")
+        throw new Error("This email is already registered. Try logging in instead.");
+      if (fb?.code === "auth/invalid-email")
+        throw new Error("Invalid email address.");
+      if (fb?.code === "auth/weak-password")
+        throw new Error("Password must be at least 6 characters.");
+      if (fb?.code === "auth/unauthorized-domain")
+        throw new Error("This domain is not authorized. Add it in Firebase Console → Authentication → Settings → Authorized domains.");
+      throw new Error(fb?.message || "Registration failed. Please try again.");
+    }
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        firebaseUid: cred.user.uid,
+        firebaseUid: cred!.user.uid,
         email,
         role,
         ...extra,
