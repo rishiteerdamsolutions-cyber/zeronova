@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Menu, Sun, Moon, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
+import { cn } from "@/lib/utils";
 
 interface StickyHeaderProps {
   showAuth?: boolean;
@@ -14,6 +15,14 @@ interface StickyHeaderProps {
   user?: { id: string; email: string; role: string } | null;
 }
 
+const CATEGORIES = [
+  { href: "/", label: "Home" },
+  { href: "/opportunities", label: "Opportunities" },
+  { href: "/events", label: "Events" },
+  { href: "/impact-lab", label: "Impact Lab" },
+  { href: "/collaboration", label: "Collaboration" },
+];
+
 export function StickyHeader({
   showAuth = true,
   darkMode = false,
@@ -22,44 +31,31 @@ export function StickyHeader({
   user,
 }: StickyHeaderProps) {
   const { signOut } = useAuth();
-  const router = useRouter();
+  const pathname = usePathname();
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[var(--border)] bg-[var(--background)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--background)]/80">
-      <div className="container flex h-14 items-center justify-between px-4">
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-40 w-full bg-[var(--nav-bg)] text-[var(--nav-foreground)] shadow-md">
+      <div className="flex h-14 items-center justify-between px-4">
+        <div className="flex items-center gap-3">
           <button
             type="button"
-            className="md:hidden p-2 -ml-2"
+            className="p-2 -ml-1 rounded-lg hover:bg-white/10"
             onClick={onMenuClick}
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <Link href="/" className="font-semibold text-lg">
+          <Link href="/" className="font-bold text-lg">
             Zeronova
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/opportunities" className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
-              Opportunities
-            </Link>
-            <Link href="/events" className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
-              Events
-            </Link>
-            <Link href="/impact-lab" className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
-              Impact Lab
-            </Link>
-            <Link href="/collaboration" className="text-[var(--foreground-secondary)] hover:text-[var(--foreground)]">
-              Collaboration
-            </Link>
-          </nav>
         </div>
         <div className="flex items-center gap-2">
           {onToggleDark && (
             <button
               type="button"
-              className="p-2 rounded-lg hover:bg-[var(--background-secondary)]"
+              className="p-2 rounded-lg hover:bg-white/10"
               onClick={onToggleDark}
-              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={darkMode ? "Light mode" : "Dark mode"}
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
@@ -67,7 +63,7 @@ export function StickyHeader({
           {showAuth &&
             (user ? (
               <>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" size="sm" asChild className="text-white hover:bg-white/10 hover:text-white">
                   <Link
                     href={
                       user.role === "admin"
@@ -80,28 +76,46 @@ export function StickyHeader({
                     Dashboard
                   </Link>
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <button
+                  type="button"
+                  className="p-2 rounded-lg hover:bg-white/10"
                   onClick={async () => {
                     await signOut();
-                    router.push("/");
-                    router.refresh();
+                    window.location.href = "/";
                   }}
+                  aria-label="Logout"
                 >
                   <LogOut className="h-5 w-5" />
-                </Button>
+                </button>
               </>
             ) : (
               <>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" size="sm" asChild className="text-white hover:bg-white/10 hover:text-white">
                   <Link href="/login">Login</Link>
                 </Button>
-                <Button asChild>
+                <Button size="sm" asChild className="bg-white text-[var(--nav-bg)] hover:bg-white/90">
                   <Link href="/register">Register</Link>
                 </Button>
               </>
             ))}
+        </div>
+      </div>
+      <div className="overflow-x-auto hide-scrollbar border-t border-white/10">
+        <div className="flex gap-1 px-4 py-2 min-w-max">
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              className={cn(
+                "px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
+                pathname === c.href || (c.href !== "/" && pathname.startsWith(c.href))
+                  ? "bg-white text-[var(--nav-bg)]"
+                  : "text-white/90 hover:bg-white/10"
+              )}
+            >
+              {c.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>

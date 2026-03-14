@@ -21,7 +21,7 @@ export function ImageUpload({ folder, onUpload, currentUrl, className }: ImageUp
     const file = e.target.files?.[0];
     if (!file) return;
     if (!storage) {
-      setError("Upload not available. Configure Firebase to enable.");
+      setError("Upload is temporarily unavailable.");
       return;
     }
     setError("");
@@ -41,8 +41,8 @@ export function ImageUpload({ folder, onUpload, currentUrl, className }: ImageUp
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       onUpload(url);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Upload failed");
+    } catch {
+      setError("Upload failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export function ImageUpload({ folder, onUpload, currentUrl, className }: ImageUp
       <div className={className}>
         <div className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-[var(--border)] rounded-lg bg-[var(--background-secondary)]">
           <Upload className="h-8 w-8 text-[var(--foreground-muted)] mb-1" />
-          <span className="text-xs text-[var(--foreground-muted)] text-center px-2">Configure Firebase to enable uploads</span>
+          <span className="text-xs text-[var(--foreground-muted)] text-center px-2">Upload unavailable</span>
         </div>
       </div>
     );

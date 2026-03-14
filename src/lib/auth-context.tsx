@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string): Promise<AppUser | null> => {
     const auth = getFirebaseAuth();
-    if (!auth) throw new Error("Auth not configured. Add Firebase env vars to enable login.");
+    if (!auth) throw new Error("Sign in is temporarily unavailable.");
     await signInWithEmailAndPassword(auth, email, password);
     const appUser = await fetchUserFromDb(auth.currentUser!.uid);
     setUser(appUser);
@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     extra?: Record<string, unknown>
   ) => {
     const auth = getFirebaseAuth();
-    if (!auth) throw new Error("Auth not configured. Add Firebase env vars to enable registration.");
+    if (!auth) throw new Error("Registration is temporarily unavailable.");
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const res = await fetch("/api/auth/register", {
       method: "POST",

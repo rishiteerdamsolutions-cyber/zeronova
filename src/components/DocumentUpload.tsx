@@ -24,7 +24,7 @@ export function DocumentUpload({ folder, onUpload, disabled, label = "Upload doc
     const file = e.target.files?.[0];
     if (!file) return;
     if (!storage) {
-      setError("Upload not available. Configure Firebase to enable.");
+      setError("Upload is temporarily unavailable.");
       return;
     }
     setError("");
@@ -43,8 +43,8 @@ export function DocumentUpload({ folder, onUpload, disabled, label = "Upload doc
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       onUpload(url);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Upload failed");
+    } catch {
+      setError("Upload failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export function DocumentUpload({ folder, onUpload, disabled, label = "Upload doc
       <div>
         <div className="flex flex-col items-center justify-center w-full min-h-[120px] border-2 border-dashed border-[var(--border)] rounded-lg bg-[var(--background-secondary)] p-4">
           <FileText className="h-10 w-10 text-[var(--foreground-muted)] mb-2" />
-          <span className="text-sm text-[var(--foreground-muted)] text-center">Configure Firebase to enable uploads</span>
+          <span className="text-sm text-[var(--foreground-muted)] text-center">Upload unavailable</span>
         </div>
       </div>
     );

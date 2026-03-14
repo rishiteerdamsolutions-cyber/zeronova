@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { AuthNotConfiguredBanner } from "@/components/AuthNotConfiguredBanner";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Building2 } from "lucide-react";
 
@@ -13,7 +12,6 @@ export default function RegisterPage() {
   return (
     <AppLayout showAuth={false}>
       <div className="min-h-[60vh] flex flex-col items-center justify-center py-12">
-        <AuthNotConfiguredBanner />
         <h1 className="text-2xl font-bold mb-2">Create an account</h1>
         <p className="text-[var(--foreground-secondary)] mb-8">Choose how you want to join</p>
         <div className="grid md:grid-cols-2 gap-6 w-full max-w-2xl">

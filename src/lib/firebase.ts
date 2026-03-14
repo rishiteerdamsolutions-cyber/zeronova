@@ -43,6 +43,7 @@ export function getFirebaseAuth(): Auth | null {
 }
 
 export function getFirebaseStorage(): FirebaseStorage | null {
+  if (process.env.NEXT_PUBLIC_FIREBASE_STORAGE_ENABLED !== "true") return null;
   const app = getFirebaseApp();
   return app ? getStorage(app) : null;
 }

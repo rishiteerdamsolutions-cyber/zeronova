@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuth } from "@/lib/auth-context";
-import { AuthNotConfiguredBanner } from "@/components/AuthNotConfiguredBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -38,14 +37,13 @@ export default function LoginPage() {
       else if (appUser?.role === "ngo") router.push("/dashboard/ngo");
       else router.push("/dashboard/volunteer");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Login failed");
+      setError(e instanceof Error ? e.message : "Login failed. Please try again.");
     }
   };
 
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6">
-        <AuthNotConfiguredBanner />
         <h1 className="text-2xl font-bold text-center">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {error && (

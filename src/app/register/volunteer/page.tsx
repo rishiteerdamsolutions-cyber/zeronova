@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuth } from "@/lib/auth-context";
-import { AuthNotConfiguredBanner } from "@/components/AuthNotConfiguredBanner";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +37,7 @@ export default function VolunteerRegisterPage() {
       router.push("/dashboard/volunteer");
       router.refresh();
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Registration failed");
+      setError(e instanceof Error ? e.message : "Registration failed. Please try again.");
     }
   };
 
@@ -46,7 +45,6 @@ export default function VolunteerRegisterPage() {
     <AppLayout showAuth={false}>
       <div className="min-h-[60vh] flex flex-col items-center justify-center py-12">
         <div className="w-full max-w-md space-y-6">
-          <AuthNotConfiguredBanner />
           <h1 className="text-2xl font-bold text-center">Register as Volunteer</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {error && (
