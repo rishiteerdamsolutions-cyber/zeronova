@@ -5,6 +5,7 @@ import { StickyHeader } from "./StickyHeader";
 import { SlideOutSidebar } from "./SlideOutSidebar";
 import { BottomNav } from "./BottomNav";
 import { Footer } from "./Footer";
+import { QuotationFAB } from "../QuotationFAB";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { useAuth } from "@/lib/auth-context";
 
@@ -38,6 +39,7 @@ export function AppLayout({ children, role: propRole, showAuth = true }: AppLayo
         {children}
       </main>
       <Footer />
+      <QuotationFAB />
       <BottomNav role={role} />
     </div>
   );
