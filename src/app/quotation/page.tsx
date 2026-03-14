@@ -1,9 +1,11 @@
 import fs from "fs";
 import path from "path";
+import Image from "next/image";
 import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const markdownComponents = {
   h1: ({ children }: { children?: React.ReactNode }) => (
@@ -81,8 +83,21 @@ export default function QuotationPage() {
     <AppLayout>
       <div className="max-w-3xl mx-auto py-8 md:py-12">
         <article className="bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm p-6 md:p-10">
+          <header className="flex items-center gap-4 pb-6 mb-6 border-b border-[var(--border)]">
+            <Image
+              src="/A-logo.png"
+              alt="AI Developer India"
+              width={56}
+              height={56}
+              className="rounded-lg object-contain"
+            />
+            <div>
+              <p className="font-semibold text-[var(--foreground)]">AI Developer India</p>
+              <p className="text-sm text-[var(--foreground-secondary)]">aideveloperindia@gmail.com · +91 9505009699</p>
+            </div>
+          </header>
           <div className="quotation-doc [&_.quotation-summary]:bg-[var(--accent)]/5 [&_.quotation-summary]:rounded-lg [&_.quotation-summary]:p-4 [&_.quotation-summary]:my-6 [&_.quotation-summary]:border [&_.quotation-summary]:border-[var(--accent)]/20">
-            <ReactMarkdown components={markdownComponents}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {content}
             </ReactMarkdown>
           </div>

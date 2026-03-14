@@ -1,10 +1,12 @@
 # Quotation – Zeronova NGO Collaboration Platform
 
-**Project:** Zeronova NGO Collaboration Platform  
-**Date:** 14 March 2026  
-**Location:** Hyderabad, Telangana, India  
-**Prepared for:** [Client Name]  
-**Prepared by:** [Your Name/Company]
+| Field | Details |
+|-------|---------|
+| **Project** | Zeronova NGO Collaboration Platform |
+| **Date** | 14 March 2026 |
+| **Location** | Hyderabad, Telangana, India |
+| **Prepared for** | Zeronova NGO |
+| **Prepared by** | AI Developer India |
 
 ---
 
@@ -191,10 +193,13 @@ Everything in **Plan 2**, plus:
 
 ---
 
-**Contact**  
-[Your Name]  
-[Your Email]  
-[Your Phone]
+**Contact**
+
+| Field | Details |
+|-------|---------|
+| Company | AI Developer India |
+| Email | aideveloperindia@gmail.com · ceo@beyondxia.online |
+| Phone (WhatsApp) | +91 9505009699 |
 
 ---
 
