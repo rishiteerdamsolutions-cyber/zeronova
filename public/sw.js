@@ -1,8 +1,8 @@
-const CACHE_NAME = "zeronova-v1";
+const CACHE_NAME = "zeronova-v2";
 const STATIC_ASSETS = ["/", "/manifest.json"];
 
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
+  // Do NOT skipWaiting here - let the UpdateBanner prompt the user first
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
@@ -14,9 +14,8 @@ self.addEventListener("activate", (event) => {
       Promise.all(
         keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
